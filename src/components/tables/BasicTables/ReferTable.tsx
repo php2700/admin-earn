@@ -21,7 +21,7 @@ export default function ReferTable() {
       const token = localStorage.getItem("fatafatLoanToken");
 
       const response = await axios.get(
-        `${import.meta.env.VITE_APP_URL}api/admin/referList`,
+        `${import.meta.env.VITE_APP_URL}api/admin/withdraw-req-list`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

@@ -39,7 +39,7 @@ export default function App() {
             <Route  path="/home" element={<Home />} />
             <Route path="/users" element={<UserTables />} />
             <Route path="/loan-application" element={<LoanTables />} />
-            <Route path="/refers-list" element={<ReferTables />} />
+            <Route path="/withdraw-req-list" element={<ReferTables />} />
             <Route path="/refer-charge" element={<ReferAmount/>} />
             <Route path="/contact-list" element={<ContactTables/>} />
 
