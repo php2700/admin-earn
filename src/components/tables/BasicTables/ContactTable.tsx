@@ -75,20 +75,20 @@ export default function ContactTable() {
                 isHeader
                 className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
               >
-                subject
+                Subject
               </TableCell>
               <TableCell
                 isHeader
                 className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
               >
-                message
+                Message
               </TableCell>
 
               <TableCell
                 isHeader
                 className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
               >
-                created
+                Created Date
               </TableCell>
             </TableRow>
           </TableHeader>
@@ -115,7 +115,7 @@ export default function ContactTable() {
                   {user.message}
                 </TableCell>
                 <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                  {new Date(user.createdAt).toLocaleDateString()}
+                  {new Date(user.createdAt).toLocaleDateString("en-GB")}
                 </TableCell>
               </TableRow>
             ))}

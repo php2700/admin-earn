@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 export default function UserTable() {
+  const [searchText, setSearchText] = useState("");
   const [userData, setUserData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -26,12 +27,15 @@ export default function UserTable() {
       const token = localStorage.getItem("fatafatLoanToken");
 
       const response = await axios.get(
-        `${
-          import.meta.env.VITE_APP_URL
-        }api/admin/userList?page=${page}&limit=${limit}`,
+        `${import.meta.env.VITE_APP_URL}api/admin/userList`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
+          },
+          params: {
+            page: page,
+            limit: limit,
+            search: searchText?.trim(),
           },
         }
       );
@@ -49,6 +53,13 @@ export default function UserTable() {
     getUserList();
   }, [page]);
 
+  useEffect(() => {
+    const debounce = setTimeout(() => {
+      getUserList();
+    }, 500);
+    return () => clearTimeout(debounce);
+  }, [searchText]);
+
   if (loading) return <p>Loading loans...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
 
@@ -64,6 +75,16 @@ export default function UserTable() {
 
   return (
     <div className="rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
+      <div className="w-full px-2 my-2 sm:w-64">
+        <input
+          type="search"
+          placeholder="Search..."
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
+          className="w-full px-3 py-2 bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-200 rounded-md border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 placeholder-gray-500 dark:placeholder-gray-400"
+        />
+      </div>
+
       <div className=" overflow-y-auto overflow-x-auto">
         {" "}
         {/* Adjusted height and scroll */}
@@ -106,24 +127,24 @@ export default function UserTable() {
               >
                 Referred To
               </TableCell>
-              <TableCell
+              {/* <TableCell
                 isHeader
                 className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
               >
                 role
-              </TableCell>
-              <TableCell
+              </TableCell> */}
+              {/* <TableCell
                 isHeader
                 className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
               >
                 registerBy
-              </TableCell>
+              </TableCell> */}
 
               <TableCell
                 isHeader
                 className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
               >
-                created
+                Created Date
               </TableCell>
             </TableRow>
           </TableHeader>
@@ -149,35 +170,39 @@ export default function UserTable() {
                 <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                   {user.referralCode ? user?.referralCode : "N/A"}
                 </TableCell>
-            <TableCell className="px-4 py-3 text-start">
-  {user.isActivate == true || user.isActivate == "true" ? (
-    <span className="px-3 py-1 rounded-full bg-green-100 text-green-800 font-semibold text-sm">
-      Paid
-    </span>
-  ) : (
-    <span className="px-3 py-1 rounded-full bg-red-100 text-red-800 font-semibold text-sm">
-      Unpaid
-    </span>
-  )}
-</TableCell>
-
                 <TableCell className="px-4 py-3 text-start">
-                  <button
-                    onClick={() => handleView(user?.referrals)}
-                    className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-lg text-sm font-medium transition-colors duration-200"
-                  >
-                    View
-                  </button>
+                  {user.isActivate == true || user.isActivate == "true" ? (
+                    <span className="px-3 py-1 rounded-full bg-green-100 text-green-800 font-semibold text-sm">
+                      Active
+                    </span>
+                  ) : (
+                    <span className="px-3 py-1 rounded-full bg-red-100 text-red-800 font-semibold text-sm">
+                      InActive
+                    </span>
+                  )}
                 </TableCell>
 
-                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                <TableCell className="px-4 py-3 text-start text-gray-500">
+                  {user?.referrals?.length > 0 ? (
+                    <button
+                      onClick={() => handleView(user?.referrals)}
+                      className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-lg text-sm font-medium transition-colors duration-200"
+                    >
+                      View
+                    </button>
+                  ) : (
+                    "N/A"
+                  )}
+                </TableCell>
+
+                {/* <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                   {user.role}
                 </TableCell>
                 <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                   {user.registerBy}
-                </TableCell>
+                </TableCell> */}
                 <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                  {new Date(user.createdAt).toLocaleDateString()}
+                  {new Date(user.createdAt).toLocaleDateString("en-GB")}
                 </TableCell>
               </TableRow>
             ))}
@@ -228,6 +253,22 @@ export default function UserTable() {
                     <p className="text-gray-700">
                       <span className="font-semibold">Email:</span>{" "}
                       {user?.userDetails?.email}
+                    </p>
+                    <p className="text-gray-700">
+                      <span className="font-semibold">Activation Status:</span>{" "}
+                      <span
+                        className={
+                          user.userDetails.isActivate == true ||
+                          user.userDetails.isActivate == "true"
+                            ? "text-green-600 font-semibold"
+                            : "text-red-600 font-semibold"
+                        }
+                      >
+                        {user.userDetails.isActivate == true ||
+                        user.userDetails.isActivate == "true"
+                          ? "Active"
+                          : "Inactive"}
+                      </span>
                     </p>
                   </div>
                 ))}

@@ -68,6 +68,7 @@ export default function ReferTable() {
 
   return (
     <div className="rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
+      
       <div className="max-h-[400px] overflow-y-auto overflow-x-auto">
         {" "}
         {/* Adjusted height and scroll */}
@@ -122,7 +123,7 @@ export default function ReferTable() {
                 isHeader
                 className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
               >
-                created
+                Created Date
               </TableCell>
             </TableRow>
           </TableHeader>

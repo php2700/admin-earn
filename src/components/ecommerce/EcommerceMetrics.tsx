@@ -31,7 +31,7 @@ export default function EcommerceMetrics() {
 
   console.log(data, "aaq");
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6">
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 md:gap-6">
       {/* <!-- Metric Item Start --> */}
       <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6">
         <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-xl dark:bg-gray-800">
@@ -44,13 +44,11 @@ export default function EcommerceMetrics() {
               Total Users
             </span>
             <h4 className="mt-2 font-bold text-gray-800 text-title-sm dark:text-white/90">
-              {/* {data?.userCount} */}
-              0
+              {data?.userCount}
             </h4>
           </div>
         </div>
       </div>
-
 
       {/* <!-- Metric Item Start --> */}
       <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6">
@@ -63,7 +61,7 @@ export default function EcommerceMetrics() {
               Active User Count
             </span>
             <h4 className="mt-2 font-bold text-gray-800 text-title-sm dark:text-white/90">
-              {/* {data?.active} */}0
+              {data?.active}
             </h4>
           </div>
         </div>
@@ -78,7 +76,7 @@ export default function EcommerceMetrics() {
               Pending User Count
             </span>
             <h4 className="mt-2 font-bold text-gray-800 text-title-sm dark:text-white/90">
-              {/* {data?.inActive} */}0
+              {data?.inActive}
             </h4>
           </div>
         </div>
@@ -94,7 +92,7 @@ export default function EcommerceMetrics() {
               Total payout
             </span>
             <h4 className="mt-2 font-bold text-gray-800 text-title-sm dark:text-white/90">
-              {/* {data?.totalPayout} */}0
+              {data?.totalPayout}
             </h4>
           </div>
         </div>
