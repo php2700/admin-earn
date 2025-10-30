@@ -32,17 +32,15 @@ export default function App() {
         <ScrollToTop />
         <Routes>
           {/* Dashboard Layout */}
-          <Route index path="/"   element={<SignIn />} />
-
+          <Route index path="/" element={<SignIn />} />
 
           <Route element={<AppLayout />}>
-            <Route  path="/home" element={<Home />} />
+            <Route path="/home" element={<Home />} />
             <Route path="/users" element={<UserTables />} />
             <Route path="/loan-application" element={<LoanTables />} />
             <Route path="/withdraw-req-list" element={<ReferTables />} />
-            <Route path="/refer-charge" element={<ReferAmount/>} />
-            <Route path="/contact-list" element={<ContactTables/>} />
-
+            <Route path="/refer-charge" element={<ReferAmount />} />
+            <Route path="/contact-list" element={<ContactTables />} />
 
             {/* Others Page */}
             <Route path="/profile" element={<UserProfiles />} />
@@ -53,8 +51,6 @@ export default function App() {
             <Route path="/form-elements" element={<FormElements />} />
 
             {/* Tables */}
- 
-
 
             {/* Ui Elements */}
             <Route path="/alerts" element={<Alerts />} />
@@ -70,7 +66,7 @@ export default function App() {
           </Route>
 
           {/* Auth Layout */}
-          <Route path="/signup"  element={<SignUp />} />
+          <Route path="/signup" element={<SignUp />} />
 
           {/* Fallback Route */}
           <Route path="*" element={<NotFound />} />
