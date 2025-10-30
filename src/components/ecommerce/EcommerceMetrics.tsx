@@ -44,7 +44,8 @@ export default function EcommerceMetrics() {
               Total Users
             </span>
             <h4 className="mt-2 font-bold text-gray-800 text-title-sm dark:text-white/90">
-              {data?.userCount}
+              {/* {data?.userCount} */}
+              0
             </h4>
           </div>
         </div>
@@ -62,7 +63,7 @@ export default function EcommerceMetrics() {
               Active User Count
             </span>
             <h4 className="mt-2 font-bold text-gray-800 text-title-sm dark:text-white/90">
-              {data?.active}
+              {/* {data?.active} */}0
             </h4>
           </div>
         </div>
@@ -77,7 +78,7 @@ export default function EcommerceMetrics() {
               Pending User Count
             </span>
             <h4 className="mt-2 font-bold text-gray-800 text-title-sm dark:text-white/90">
-              {data?.inActive}
+              {/* {data?.inActive} */}0
             </h4>
           </div>
         </div>
@@ -93,7 +94,7 @@ export default function EcommerceMetrics() {
               Total payout
             </span>
             <h4 className="mt-2 font-bold text-gray-800 text-title-sm dark:text-white/90">
-              {data?.totalPayout}
+              {/* {data?.totalPayout} */}0
             </h4>
           </div>
         </div>
