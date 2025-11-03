@@ -24,10 +24,13 @@ import UserTables from "./pages/Tables/userTable";
 import ReferTables from "./pages/Tables/ReferTable";
 import ReferAmount from "./pages/Tables/RefferAmount";
 import ContactTables from "./pages/Tables/contactTable";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function App() {
   return (
     <>
+      <ToastContainer style={{ zIndex: 999999 }} />
       <Router>
         <ScrollToTop />
         <Routes>

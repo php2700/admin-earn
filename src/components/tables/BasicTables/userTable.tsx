@@ -8,6 +8,7 @@ import {
 } from "../../ui/table";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 export default function UserTable() {
   const [searchText, setSearchText] = useState("");
@@ -19,12 +20,11 @@ export default function UserTable() {
   const [limit] = useState(10);
   const [selectedUser, setSelectedUser] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const token = localStorage.getItem("fatafatLoanToken");
 
   const getUserList = async () => {
     try {
       setLoading(true);
-
-      const token = localStorage.getItem("fatafatLoanToken");
 
       const response = await axios.get(
         `${import.meta.env.VITE_APP_URL}api/admin/userList`,
@@ -59,6 +59,40 @@ export default function UserTable() {
     }, 500);
     return () => clearTimeout(debounce);
   }, [searchText]);
+
+  const handleStatusChange = async (user, userId, value) => {
+    try {
+      if (user.referralCode) {
+        return toast.error("Can not update", {
+          position: "top-right",
+        });
+      }
+
+      if (!user.paymentImage && !user.utrNumber)
+        return toast.error("Payment Verify Remaining", {
+          position: "top-right",
+        });
+      const isActivate = value === "true";
+      await axios.patch(
+        `${import.meta.env.VITE_APP_URL}api/admin/activate-user`,
+        { userId, isActivate },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      getUserList();
+      toast.success(
+        `User status changed to ${isActivate ? "Active" : "Inactive"}`
+      );
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to update status", {
+        position: "top-right",
+      });
+    }
+  };
 
   if (loading) return <p>Loading loans...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
@@ -119,6 +153,12 @@ export default function UserTable() {
                 isHeader
                 className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
               >
+                Payment verify
+              </TableCell>
+              <TableCell
+                isHeader
+                className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
+              >
                 Activation Status
               </TableCell>
               <TableCell
@@ -170,7 +210,33 @@ export default function UserTable() {
                 <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                   {user.referralCode ? user?.referralCode : "N/A"}
                 </TableCell>
-                <TableCell className="px-4 py-3 text-start">
+
+                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                  {user?.utrNumber ? (
+                    user.utrNumber
+                  ) : user?.paymentImage ? (
+                    <a
+                      href={`${import.meta.env.VITE_APP_URL}${
+                        user.paymentImage
+                      }`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-block"
+                    >
+                      <img
+                        src={`${import.meta.env.VITE_APP_URL}${
+                          user.paymentImage
+                        }`}
+                        alt="Payment Proof"
+                        className="w-16 h-16 object-cover rounded-lg border hover:scale-105 transition-transform duration-200"
+                      />
+                    </a>
+                  ) : (
+                    "N/A"
+                  )}
+                </TableCell>
+
+                {/* <TableCell className="px-4 py-3 text-start">
                   {user.isActivate == true || user.isActivate == "true" ? (
                     <span className="px-3 py-1 rounded-full bg-green-100 text-green-800 font-semibold text-sm">
                       Active
@@ -180,6 +246,26 @@ export default function UserTable() {
                       InActive
                     </span>
                   )}
+                </TableCell> */}
+                <TableCell className="px-4 py-3 text-start">
+                  <select
+                    value={user.isActivate ? "true" : "false"}
+                    onChange={(e) =>
+                      handleStatusChange(user, user._id, e.target.value)
+                    }
+                    className={`px-3 py-1 rounded-full font-semibold text-sm cursor-pointer border-0 focus:ring-2 ${
+                      user.isActivate
+                        ? "bg-green-100 text-green-800 focus:ring-green-300"
+                        : "bg-red-100 text-red-800 focus:ring-red-300"
+                    }`}
+                  >
+                    <option value="true" className="text-green-800">
+                      Active
+                    </option>
+                    <option value="false" className="text-red-800">
+                      Inactive
+                    </option>
+                  </select>
                 </TableCell>
 
                 <TableCell className="px-4 py-3 text-start text-gray-500">
