@@ -43,7 +43,7 @@ export default function ReferTable() {
 
   const handleAccept = async (user, status) => {
     try {
-      const res = await axios.post(
+      const res = await axios.patch(
         `${import.meta.env.VITE_APP_URL}api/admin/send-payment`,
         {
           _id: user?._id,
@@ -68,7 +68,7 @@ export default function ReferTable() {
 
   return (
     <div className="rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
-      <div className="max-h-[400px] overflow-y-auto overflow-x-auto">
+      <div className=" overflow-x-auto">
         {" "}
         {/* Adjusted height and scroll */}
         <Table>
@@ -91,7 +91,13 @@ export default function ReferTable() {
                 isHeader
                 className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
               >
-                Upi Id
+                User Account Name
+              </TableCell>
+              <TableCell
+                isHeader
+                className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
+              >
+                IFSC Code
               </TableCell>
               <TableCell
                 isHeader
@@ -143,7 +149,10 @@ export default function ReferTable() {
                   {user?.userId?.email}
                 </TableCell>
                 <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                  {user?.upiId}
+                  {user?.bankAccountName ? user.bankAccountName :'N/A'}
+                </TableCell>
+                         <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                  {user.ifscCode ? user.ifscCode : 'N/A'}
                 </TableCell>
                 <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                   {user.amount}
