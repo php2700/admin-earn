@@ -91,7 +91,7 @@ export default function ReferTable() {
                 isHeader
                 className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
               >
-                User Account Name
+                User Account Number
               </TableCell>
               <TableCell
                 isHeader

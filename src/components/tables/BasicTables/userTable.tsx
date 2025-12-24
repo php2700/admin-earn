@@ -9,7 +9,7 @@ import {
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-
+const activationStatus = ["active", "inactive", "rejected"];
 export default function UserTable() {
   const [searchText, setSearchText] = useState("");
   const [userData, setUserData] = useState([]);
@@ -62,6 +62,7 @@ export default function UserTable() {
 
   const handleStatusChange = async (user, userId, value) => {
     try {
+
       if (user.referralCode) {
         return toast.error("Can not update", {
           position: "top-right",
@@ -72,7 +73,7 @@ export default function UserTable() {
         return toast.error("Payment Verify Remaining", {
           position: "top-right",
         });
-      const isActivate = value === "true";
+      const isActivate = value ;
       await axios.patch(
         `${import.meta.env.VITE_APP_URL}api/admin/activate-user`,
         { userId, isActivate },
@@ -84,7 +85,7 @@ export default function UserTable() {
       );
       getUserList();
       toast.success(
-        `User status changed to ${isActivate ? "Active" : "Inactive"}`
+        `User status changed to ${value}`
       );
     } catch (error) {
       console.error(error);
@@ -247,7 +248,7 @@ export default function UserTable() {
                     </span>
                   )}
                 </TableCell> */}
-                <TableCell className="px-4 py-3 text-start">
+                {/* <TableCell className="px-4 py-3 text-start">
                   <select
                     value={user.isActivate ? "true" : "false"}
                     onChange={(e) =>
@@ -259,14 +260,36 @@ export default function UserTable() {
                         : "bg-red-100 text-red-800 focus:ring-red-300"
                     }`}
                   >
-                    <option value="true" className="text-green-800">
+                    <option value="active" className="text-green-800">
                       Active
                     </option>
-                    <option value="false" className="text-red-800">
-                      Inactive
+                  
+                    <option value="rejected" className="text-green-800">
+                      Rejected
                     </option>
                   </select>
-                </TableCell>
+                </TableCell> */}
+     <TableCell className="px-4 py-3 text-start">
+  <select
+    value={user.isActivate}
+    onChange={(e) =>
+      handleStatusChange(user, user._id, e.target.value)
+    }
+    className={`px-3 py-1 rounded-full font-semibold text-sm cursor-pointer border-0 focus:ring-2 ${
+      user.isActivate === "active"
+        ? "bg-green-100 text-green-800 focus:ring-green-300"
+        : user.isActivate === "inactive"
+        ? "bg-yellow-100 text-yellow-800 focus:ring-yellow-300"
+        : "bg-red-100 text-red-800 focus:ring-red-300"
+    }`}
+  >
+    <option value="active">Active</option>
+    <option value="inactive">InActive</option>
+    <option value="reject">Rejected</option>
+  </select>
+</TableCell>
+
+
 
                 <TableCell className="px-4 py-3 text-start text-gray-500">
                   {user?.referrals?.length > 0 ? (
